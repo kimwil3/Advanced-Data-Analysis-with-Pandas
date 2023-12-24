@@ -1,0 +1,35 @@
+import pandas as pd
+
+# Sample sales data
+data = {
+    'Date': ['2023-01-01', '2023-01-02', '2023-01-03', '2023-01-04', '2023-01-05'],
+    'Product': ['A', 'B', 'A', 'C', 'B'],
+    'Price': [100, 150, 100, 200, 180],
+    'Quantity': [5, 3, 4, 2, 5],
+    'City': ['New York', 'Los Angeles', 'Chicago', 'Houston', 'New York']
+}
+
+# Create a DataFrame from the data
+sales_df = pd.DataFrame(data)
+
+# Convert 'Date' column to datetime format
+sales_df['Date'] = pd.to_datetime(sales_df['Date'])
+
+# Calculate total sales (Price * Quantity)
+sales_df['TotalSales'] = sales_df['Price'] * sales_df['Quantity']
+
+# Group data by 'Product' and aggregate sales information
+product_sales = sales_df.groupby('Product').agg({
+    'Price': 'mean',
+    'Quantity': 'sum',
+    'TotalSales': 'sum'
+})
+
+# Display product sales information
+print("Product Sales Information:")
+print(product_sales)
+
+# Get the city with the highest total sales
+city_highest_sales = sales_df.groupby('City')['TotalSales'].sum().idxmax()
+
+print("\nCity with the highest total sales:", city_highest_sales)
